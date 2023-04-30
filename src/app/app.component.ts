@@ -3,11 +3,15 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-root',
   template: `
-    <button class="increment-btn" (click)="increment()">+1</button>
+    <h1>Counter:</h1>
+    
+    <div>
+      <button class="decrement-btn" (click)="decrement()">-1</button>
 
-    <div>{{ counter }}</div>
+      <span>{{ counter }}</span>
 
-    <button class="decrement-btn" (click)="decrement()">-1</button>
+      <button class="increment-btn" (click)="increment()">+1</button>
+    </div>
   `,
 })
 export class AppComponent {
