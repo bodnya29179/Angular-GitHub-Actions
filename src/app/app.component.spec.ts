@@ -47,7 +47,7 @@ describe('AppComponent', () => {
       componentUnderTest.decrement();
 
       // Assert
-      expect(componentUnderTest.counter).toBe(previousCounter + 1);
+      expect(componentUnderTest.counter).toBe(previousCounter - 1);
     });
   });
 });
