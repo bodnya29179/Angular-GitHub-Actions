@@ -6,11 +6,11 @@ import { Component } from '@angular/core';
     <h1>Counter:</h1>
     
     <div>
-      <button class="decrement-btn" (click)="decrement()">-1</button>
+      <button class="btn decrement-btn" (click)="decrement()">-</button>
 
       <span>{{ counter }}</span>
 
-      <button class="increment-btn" (click)="increment()">+1</button>
+      <button class="btn increment-btn" (click)="increment()">+</button>
     </div>
   `,
 })
