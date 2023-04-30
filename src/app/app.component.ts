@@ -10,7 +10,7 @@ import { Component } from '@angular/core';
 
       <span>{{ counter }}</span>
 
-      <button class="btn increment-btn" (click)="increment()">+1</button>
+      <button class="btn increment-btn" (click)="increment()">+</button>
     </div>
   `,
 })
