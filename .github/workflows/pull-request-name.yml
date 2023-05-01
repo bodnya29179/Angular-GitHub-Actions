@@ -7,7 +7,7 @@ on:
     types: [ opened, edited, reopened, synchronize ]
 
 jobs:
-  validate_pull_request:
+  validate-pull-request-name:
     runs-on: ubuntu-latest
     steps:
       - name: Validate Pull Request Title
