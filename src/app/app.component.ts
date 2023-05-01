@@ -16,7 +16,6 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   counter = 0;
-  linterError: {} = {};
 
   increment(): void {
     this.counter++;
