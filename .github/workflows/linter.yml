@@ -1,6 +1,10 @@
 name: Linter
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [ "master", "develop" ]
+  pull_request:
+    types: [ opened, synchronize ]
 
 jobs:
   lint:
@@ -8,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [ 16.x ]
 
     steps:
       - uses: actions/checkout@v3
