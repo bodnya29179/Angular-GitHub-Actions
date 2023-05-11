@@ -1,22 +1,22 @@
 name: "PR workflow"
 description: Running the pull request checking workflow
 
-concurrency:
-  group: pr-workflow
-  cancel-in-progress: true
-
 on:
   pull_request:
     branches: [ "master", "develop", "feature/*" ] # run workflow when we want to merge changes into these branches
 
 jobs:
-  lint:
-    uses: ./.github/workflows/linter.yml
+  pr_workflow:
+    runs-on: ubuntu-latest
 
-  unit_tests:
-    needs: [ lint ]
-    uses: ./.github/workflows/unit-tests.yml
+    steps:
+      - name: lint
+        uses: ./.github/workflows/linter.yml
 
-  build:
-    needs: [ lint, unit_tests ]
-    uses: ./.github/workflows/build.yml
+      - name: unit_tests
+        needs: [ lint ]
+        uses: ./.github/workflows/unit-tests.yml
+
+      - name: build
+        needs: [ lint, unit_tests ]
+        uses: ./.github/workflows/build.yml
