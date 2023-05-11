@@ -1,8 +1,6 @@
 name: Linter
 
 on:
-  pull_request:
-    types: [ opened, synchronize ]
   workflow_call:
 
 jobs:
@@ -14,16 +12,17 @@ jobs:
         node-version: [ 16.x ]
 
     steps:
-      - uses: actions/checkout@v3
+      - name: "☁️ Checkout repository"
+        uses: actions/checkout@v3
 
-      - name: "🔧 setup node v.${{ matrix.node-version }}"
+      - name: "🔧 Setup Node.js v.${{ matrix.node-version }}"
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
 
-      - name: "📦 install dependencies"
+      - name: "📦 Install dependencies"
         run: npm ci
 
-      - name: "🔍 lint code"
+      - name: "🔍 Lint code"
         run: npm run lint
