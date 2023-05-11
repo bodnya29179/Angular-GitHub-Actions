@@ -1,5 +1,4 @@
 name: Unit tests
-description: Running unit tests
 
 on:
   push:

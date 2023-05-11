@@ -1,5 +1,4 @@
 name: Linter
-description: Validates the code changes according to ESLint rules
 
 on:
   push:
