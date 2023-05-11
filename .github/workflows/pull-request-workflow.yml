@@ -1,6 +1,10 @@
 name: "PR workflow"
 description: Running the pull request checking workflow
 
+concurrency:
+  group: pr-workflow
+  cancel-in-progress: true
+
 on:
   pull_request:
     branches: [ "master", "develop", "feature/*" ] # run workflow when we want to merge changes into these branches
