@@ -3,7 +3,7 @@ description: Running the pull request checking workflow
 
 on:
   pull_request:
-    branches: [ "master", "develop", "feature/*" ] # run workflow when we want to merge changes into these branches
+    branches: [ "master", "develop", "feature/*" ]
 
 jobs:
   pr_workflow:
