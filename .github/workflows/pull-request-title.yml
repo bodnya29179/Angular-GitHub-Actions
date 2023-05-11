@@ -1,5 +1,4 @@
 name: Pull Request Title
-description: Validates the pull request title against a regular expression
 
 inputs:
   regex:

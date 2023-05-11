@@ -1,5 +1,4 @@
 name: PR workflow
-description: Running the pull request checking workflow
 
 on:
   pull_request:
