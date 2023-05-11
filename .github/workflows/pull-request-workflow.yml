@@ -1,4 +1,4 @@
-name: "PR workflow"
+name: PR workflow
 description: Running the pull request checking workflow
 
 on:
@@ -6,10 +6,12 @@ on:
     branches: [ "master", "develop", "feature/*" ] # run workflow when we want to merge changes into these branches
 
 jobs:
-  pr_workflow:
+  pr-workflow:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v3
+
       - name: lint
         uses: ./.github/workflows/linter.yml
 
