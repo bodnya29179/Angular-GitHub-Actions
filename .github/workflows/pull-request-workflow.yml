@@ -2,22 +2,17 @@ name: PR workflow
 
 on:
   pull_request:
-    branches: [ "master", "develop", "feature/*" ] # run workflow when we want to merge changes into these branches
+    # Run the workflow when we want to merge changes into these branches
+    branches: [ "master", "develop", "feature/*" ]
 
 jobs:
-  pr-workflow:
-    runs-on: ubuntu-latest
+  lint:
+    uses: ./.github/workflows/linter.yml
 
-    steps:
-      - uses: actions/checkout@v3
+  unit_tests:
+    needs: [ lint ]
+    uses: ./.github/workflows/unit-tests.yml
 
-      - name: lint
-        uses: ./.github/workflows/linter.yml
-
-      - name: unit_tests
-        needs: [ lint ]
-        uses: ./.github/workflows/unit-tests.yml
-
-      - name: build
-        needs: [ lint, unit_tests ]
-        uses: ./.github/workflows/build.yml
+  build:
+    needs: [ lint, unit_tests ]
+    uses: ./.github/workflows/build.yml
