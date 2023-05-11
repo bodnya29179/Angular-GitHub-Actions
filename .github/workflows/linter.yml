@@ -1,10 +1,9 @@
 name: Linter
 
 on:
-  push:
-    branches: [ "master", "develop" ]
   pull_request:
     types: [ opened, synchronize ]
+  workflow_call:
 
 jobs:
   lint:
@@ -17,14 +16,14 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: "🔧 setup node v.${{ matrix.node-version }}"
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
 
-      - name: Install dependencies
+      - name: "📦 install dependencies"
         run: npm ci
 
-      - name: Run linter
+      - name: "🔍 lint code"
         run: npm run lint

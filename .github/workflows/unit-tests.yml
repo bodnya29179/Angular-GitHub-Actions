@@ -1,13 +1,13 @@
 name: Unit tests
 
 on:
-  push:
-    branches: [ "master", "develop" ]
   pull_request:
     branches: [ "master", "develop" ]
+  workflow_call:
 
 jobs:
   unit-tests:
+    name: Running unit tests
     runs-on: ubuntu-latest
 
     strategy:
@@ -15,16 +15,17 @@ jobs:
         node-version: [ 16.x ]
 
     steps:
-      - uses: actions/checkout@v3
+      - name: "☁️ checkout repository"
+        uses: actions/checkout@v3
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: "🔧 setup node v.${{ matrix.node-version }}"
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
 
-      - name: Install dependencies
+      - name: "📦 install dependencies"
         run: npm ci
 
-      - name: Run unit tests
+      - name: "🔍 run unit tests"
         run: npm run test
