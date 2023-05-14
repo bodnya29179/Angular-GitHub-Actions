@@ -1,4 +1,5 @@
 name: PR title
+description: 'Github action to enforce naming convention on pull request title'
 
 inputs:
   regex:
