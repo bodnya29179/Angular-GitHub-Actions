@@ -1,24 +1,20 @@
 name: Branch Name
 
-on:
-  pull_request:
-    types: [ opened ]
+inputs:
+  regex:
+    description: 'The regular expression to validate the pull request title against'
+    required: false
+    default: '/^((feature|bugfix|hotfix|custom)\/\w+|AN-\d+).*$/'
 
-jobs:
-  branch_name_check:
-    runs-on: ubuntu-latest
-    steps:
-      - name: "🔎 Check branch name"
-        run: |
-          branch_name=$(git symbolic-ref --short HEAD)
-          if [[ ${#branch_name} -lt 10 ]]; then
-            echo "️⛔ Error: Branch name must have at least 10 characters"
-            exit 1
-          fi
+  min_length:
+    description: 'The regular expression to validate the pull request title against'
+    required: false
+    default: '10'
 
-          if [[ ! $branch_name =~ ^(feature|bugfix|hotfix|custom|AN-\d+).*$ ]]; then
-            echo "⛔ Error: Branch name does not meet the required pattern"
-            exit 1
-          fi
-          
-          echo "🙌 Branch name check passed successfully"
+  max_length:
+    description: 'Min length of branch name'
+    required: false
+
+runs:
+  using: 'node12'
+  main: './scripts/validate-pull-request-branch.js'

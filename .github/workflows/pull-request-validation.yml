@@ -1,0 +1,21 @@
+name: PR validation
+
+on:
+  pull_request:
+    types: [ opened, edited ]
+
+jobs:
+  branch-name-check:
+    if: github.event_name == 'pull_request' && github.event.action == 'opened'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "🔎 Check branch name"
+        uses: ./.github/workflows/branch-name.yml
+
+  pr-title-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "🔎 Check pull request title"
+        uses: ./.github/workflows/pull-request-title.yml

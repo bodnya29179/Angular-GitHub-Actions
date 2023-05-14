@@ -3,7 +3,7 @@ name: Pull Request Title
 inputs:
   regex:
     description: 'The regular expression to validate the pull request title against'
-    required: true
+    required: false
     default: '^(feature|bugfix|hotfix|custom):\s.*'
 
   min_length:
