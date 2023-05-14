@@ -5,17 +5,12 @@ on:
     types: [ opened, edited ]
 
 jobs:
-  branch-name-check:
-    if: github.event_name == 'pull_request' && github.event.action == 'opened'
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: "🔎 Check branch name"
-        uses: ./.github/workflows/branch-name.yml
-
   pr-title-check:
     runs-on: ubuntu-latest
 
     steps:
+      - name: "☁️ Checkout repository"
+        uses: actions/checkout@v3
+
       - name: "🔎 Check pull request title"
         uses: ./.github/workflows/pull-request-title.yml
