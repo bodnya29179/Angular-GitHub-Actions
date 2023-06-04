@@ -1,9 +1,10 @@
-name: Pull Request Title
+name: PR title
+description: 'Github action to enforce naming convention on pull request title'
 
 inputs:
   regex:
     description: 'The regular expression to validate the pull request title against'
-    required: true
+    required: false
     default: '^(feature|bugfix|hotfix|custom):\s.*'
 
   min_length:

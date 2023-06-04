@@ -1,21 +1,28 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { AuthService } from './auth.service';
 
 describe('AppComponent', () => {
-  let fixture: ComponentFixture<AppComponent>;
   let componentUnderTest: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
+
+  let authService: AuthService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [AppComponent],
+      providers: [
+        { provide: AuthService, useValue: {} },
+      ],
     });
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AppComponent);
-
     componentUnderTest = fixture.componentInstance;
-    componentUnderTest.counter = 0;
+
+    authService = TestBed.inject(AuthService);
+    authService.getUserData = jasmine.createSpy('getUserData').and.resolveTo();
   });
 
   it('should create an instance of the component', () => {
@@ -23,31 +30,5 @@ describe('AppComponent', () => {
     // Act
     // Assert
     expect(componentUnderTest).toBeTruthy();
-  });
-
-  describe('#increment', () => {
-    it('should increment the counter', () => {
-      // Arrange
-      const previousCounter = componentUnderTest.counter;
-
-      // Act
-      componentUnderTest.increment();
-
-      // Assert
-      expect(componentUnderTest.counter).toBe(previousCounter + 1);
-    });
-  });
-
-  describe('#decrement', () => {
-    it('should decrement the counter', () => {
-      // Arrange
-      const previousCounter = componentUnderTest.counter;
-
-      // Act
-      componentUnderTest.decrement();
-
-      // Assert
-      expect(componentUnderTest.counter).toBe(previousCounter - 1);
-    });
   });
 });
