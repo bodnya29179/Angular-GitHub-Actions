@@ -10,7 +10,7 @@ jobs:
     if: ${{ github.actor != 'dependabot[bot]' }}
 
     steps:
-      - name: '🔎 Check branch name'
+      - name: '🔎 Check branch name test'
         uses: deepakputhraya/action-branch-name@master
         with:
           regex: '((feature|bugfix|hotfix|custom)\/\w+|WW-\d+).*$'
