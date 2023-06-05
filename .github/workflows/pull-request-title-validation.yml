@@ -1,16 +1,23 @@
-name: PR validation
+name: PR title validation
 
 on:
   pull_request:
-    types: [ opened, edited ]
+    types: [opened, edited, reopened]
 
 jobs:
   pr-title-check:
     runs-on: ubuntu-latest
 
-    steps:
-      - name: '☁️ Checkout repository'
-        uses: actions/checkout@v3
+    # Ignore checking for dependabot
+    if: ${{ github.actor != 'dependabot[bot]' }}
 
+    steps:
       - name: '🔎 Check pull request title'
-        uses: ./.github/workflows/actions/pull-request-title/action.yml
+        uses: morrisoncole/pr-lint-action@v1.7.0
+        with:
+          title-regex: '^(feature|bugfix|hotfix|custom):\s.*'
+          on-failed-regex-fail-action: true
+          on-failed-regex-request-changes: true
+          on-failed-regex-create-review: true
+          on-failed-regex-comment: '⛔ The pull request title does not match the expected pattern: `%regex%`'
+          on-succeeded-regex-dismiss-review-comment: '🙌 PR title check passed successfully'
