@@ -4,7 +4,7 @@ description: 'Github action to enforce naming convention on branch names'
 inputs:
   regex:
     description: 'The regular expression to validate the pull request title against'
-    default: '/^((feature|bugfix|hotfix|custom)\/\w+|AN-\d+).*$/'
+    default: '/^((feature|bugfix|hotfix|custom)\/\w+|WW-\d+).*$/'
 
   min_length:
     description: 'Min length of branch name'
