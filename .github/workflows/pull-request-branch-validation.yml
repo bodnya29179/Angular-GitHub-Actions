@@ -13,7 +13,7 @@ jobs:
       - name: '🔎 Check branch name'
         uses: deepakputhraya/action-branch-name@master
         with:
-          regex: '/^((feature|bugfix|hotfix|custom)\/\w+|WW-\d+).*$/'
+          regex: '((feature|bugfix|hotfix|custom)\/\w+|WW-\d+).*$'
           ignore: master,develop
           min_length: 10
           max_length: 40
