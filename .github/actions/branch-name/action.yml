@@ -1,0 +1,18 @@
+name: Branch name
+description: 'Github action to enforce naming convention on branch names'
+
+inputs:
+  regex:
+    description: 'The regular expression to validate the pull request title against'
+    default: '/^((feature|bugfix|hotfix|custom)\/\w+|WW-\d+).*$/'
+
+  min_length:
+    description: 'Min length of branch name'
+    default: '10'
+
+  max_length:
+    description: 'Max length of branch name'
+
+runs:
+  using: 'node12'
+  main: './scripts/validate-pull-request-branch.js'

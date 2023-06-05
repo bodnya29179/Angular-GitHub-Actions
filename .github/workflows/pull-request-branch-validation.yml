@@ -1,0 +1,19 @@
+name: PR branch validation
+
+on: pull_request
+
+jobs:
+  branch-name-check:
+    runs-on: ubuntu-latest
+
+    # Ignore checking for dependabot
+    if: ${{ github.actor != 'dependabot[bot]' }}
+
+    steps:
+      - name: '🔎 Check branch name'
+        uses: deepakputhraya/action-branch-name@master
+        with:
+          regex: '/^((feature|bugfix|hotfix|custom)\/\w+|WW-\d+).*$/'
+          ignore: master,develop
+          min_length: 10
+          max_length: 40

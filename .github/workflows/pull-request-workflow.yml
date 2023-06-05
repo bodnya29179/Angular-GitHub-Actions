@@ -3,9 +3,9 @@ name: PR workflow
 on:
   pull_request:
     # Run the workflow when we want to merge changes into these branches
-    branches: [ "master", "develop", "feature/*" ]
+    branches: ["master", "develop", "feature/*"]
     # Events to which the workflow will respond
-    types: [ opened, synchronize ]
+    types: [opened, synchronize]
 
 jobs:
   lint:
