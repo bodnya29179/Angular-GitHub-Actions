@@ -5,6 +5,8 @@ import firebase from 'firebase/compat';
 @Component({
   selector: 'app-root',
   template: `
+    <h1>Angular Github Actions App</h1>
+
     <ng-container *ngIf="!isLoading; else loading">
       <div *ngIf="!user; else userInfo">
         <button (click)="loginViaGoogle()">Login with Google</button>
@@ -58,3 +60,6 @@ export class AppComponent implements OnInit {
     this.user = null;
   }
 }
+
+// firebase token
+// 1//09GZKcMsc7iW4CgYIARAAGAkSNwF-L9IrPUvK4H8QizKSLDp_7G3SvMDB_AYWOowrvaEyHKgAdSMz9kaaAfVgY9FBbLypGYBQaPE
