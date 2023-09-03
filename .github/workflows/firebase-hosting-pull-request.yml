@@ -1,14 +1,14 @@
 name: Deploy to Firebase
 
 on:
-  pull_request:
-    types: [opened, synchronize]
+  workflow_call:
 
 jobs:
   deploy-preview:
     name: Deploying the build to Firebase
-    if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
     runs-on: ubuntu-latest
+
+    if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
 
     steps:
       - name: '☁️ Checkout repository'
