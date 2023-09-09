@@ -2,18 +2,22 @@ name: Deploy to Firebase
 
 on:
   workflow_call:
+    inputs:
+      firebaseServiceAccountSecret: FIREBASE_SERVICE_ACCOUNT_ANGULAR_GITHUB_ACTIONS_388812
 
 jobs:
   deploy-preview:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: '☁️ Checkout repository'
+        uses: actions/checkout@v3
+
       - run: npm ci && npm run build
-      - uses: FirebaseExtended/action-hosting-deploy@v0
+
+      - name: '🚀 Deploy to Firebase'
+        uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: >-
-            ${{ secrets.FIREBASE_SERVICE_ACCOUNT_ANGULAR_GITHUB_ACTIONS_388812
-            }}
+          firebaseServiceAccount: '${{ secrets.firebaseServiceAccountSecret }}'
           projectId: angular-github-actions-388812
