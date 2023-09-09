@@ -21,5 +21,4 @@ jobs:
 
   deploy-to-firebase:
     needs: [ build ]
-    steps:
-      - uses: ./.github/workflows/firebase-hosting-pull-request.yml
+    uses: ./.github/workflows/firebase-hosting-pull-request.yml
