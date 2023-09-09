@@ -7,7 +7,7 @@ on:
         required: true
 
 jobs:
-  deploy-preview:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,8 +18,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: dist
-          key: build-${{ env.CURRENT_BRANCH }}-${{ env.HEAD_SHA }}
-          restore-keys: build-${{ env.CURRENT_BRANCH }}-
+          key: build-${{ env.CURRENT_BRANCH }}-${{ env.HEAD_SHA }}--${{ github.run_number }}
 
       - name: '🚀 Deploy to Firebase'
         uses: FirebaseExtended/action-hosting-deploy@v0
