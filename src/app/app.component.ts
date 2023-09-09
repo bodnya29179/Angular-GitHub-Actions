@@ -27,7 +27,7 @@ import firebase from 'firebase/compat';
 
       <div *ngIf="user.photoURL">
         <p>Avatar:</p>
-        <img [src]="user.photoURL" alt="Avatar"/>.
+        <img [src]="user.photoURL" alt="Avatar"/>
       </div>
       
       <button (click)="logout()">Logout</button>
@@ -35,6 +35,12 @@ import firebase from 'firebase/compat';
 
     <ng-template #loading>Loading...</ng-template>
   `,
+  styles: [`
+    :host {
+      background-color: darkcyan;
+      display: block;
+    }
+  `],
 })
 export class AppComponent implements OnInit {
   user: firebase.User;
