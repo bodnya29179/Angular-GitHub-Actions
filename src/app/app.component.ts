@@ -51,7 +51,9 @@ export class AppComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     try {
       this.user = await this.authService.getUserData();
-    } catch {}
+    } catch {
+      console.log('Something went wrong...');
+    }
 
     this.isLoading = false;
   }
