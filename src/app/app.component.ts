@@ -22,7 +22,9 @@ import firebase from 'firebase/compat';
       <div>Email: {{ user.email }}.</div>
       
       <div *ngIf="user.phoneNumber">Phone: {{ user.phoneNumber }}.</div>
-      
+
+      <div *ngIf="user.emailVerified">Email verification: {{ user.emailVerified }}.</div>
+
       <div *ngIf="user.photoURL">
         <p>Avatar:</p>
         <img [src]="user.photoURL" alt="Avatar"/>.
@@ -41,7 +43,10 @@ export class AppComponent implements OnInit {
   constructor(private authService: AuthService) {}
 
   async ngOnInit(): Promise<void> {
-    this.user = await this.authService.getUserData();
+    try {
+      this.user = await this.authService.getUserData();
+    } catch {}
+
     this.isLoading = false;
   }
 
@@ -60,6 +65,3 @@ export class AppComponent implements OnInit {
     this.user = null;
   }
 }
-
-// firebase token
-// 1//09GZKcMsc7iW4CgYIARAAGAkSNwF-L9IrPUvK4H8QizKSLDp_7G3SvMDB_AYWOowrvaEyHKgAdSMz9kaaAfVgY9FBbLypGYBQaPE
