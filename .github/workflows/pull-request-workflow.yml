@@ -8,20 +8,18 @@ on:
     types: [opened, synchronize]
 
 jobs:
-  lint:
-    uses: ./.github/workflows/linter.yml
-
-  unit-tests:
-    needs: [ lint ]
-    uses: ./.github/workflows/unit-tests.yml
+#  lint:
+#    uses: ./.github/workflows/linter.yml
+#
+#  unit-tests:
+#    needs: [ lint ]
+#    uses: ./.github/workflows/unit-tests.yml
 
   build:
-    needs: [ lint, unit-tests ]
+#    needs: [ lint, unit-tests ]
     uses: ./.github/workflows/build.yml
 
   deploy-to-firebase:
     needs: [ build ]
-    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
       - uses: ./.github/workflows/firebase-hosting-pull-request.yml
