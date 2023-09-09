@@ -2,8 +2,9 @@ name: Deploy to Firebase
 
 on:
   workflow_call:
-    inputs:
-      firebaseServiceAccountSecret: FIREBASE_SERVICE_ACCOUNT_ANGULAR_GITHUB_ACTIONS_388812
+    secrets:
+      firebaseServiceAccountSecret:
+        required: true
 
 jobs:
   deploy-preview:
