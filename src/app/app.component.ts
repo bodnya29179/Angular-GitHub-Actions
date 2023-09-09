@@ -5,6 +5,8 @@ import firebase from 'firebase/compat';
 @Component({
   selector: 'app-root',
   template: `
+    <h1>Angular Github Actions App</h1>
+
     <ng-container *ngIf="!isLoading; else loading">
       <div *ngIf="!user; else userInfo">
         <button (click)="loginViaGoogle()">Login with Google</button>
@@ -20,10 +22,12 @@ import firebase from 'firebase/compat';
       <div>Email: {{ user.email }}.</div>
       
       <div *ngIf="user.phoneNumber">Phone: {{ user.phoneNumber }}.</div>
-      
+
+      <div *ngIf="user.emailVerified">Email verification: {{ user.emailVerified }}.</div>
+
       <div *ngIf="user.photoURL">
         <p>Avatar:</p>
-        <img [src]="user.photoURL" alt="Avatar"/>.
+        <img [src]="user.photoURL" alt="Avatar"/>
       </div>
       
       <button (click)="logout()">Logout</button>
@@ -31,6 +35,12 @@ import firebase from 'firebase/compat';
 
     <ng-template #loading>Loading...</ng-template>
   `,
+  styles: [`
+    :host {
+      background-color: darkcyan;
+      display: block;
+    }
+  `],
 })
 export class AppComponent implements OnInit {
   user: firebase.User;
@@ -39,7 +49,12 @@ export class AppComponent implements OnInit {
   constructor(private authService: AuthService) {}
 
   async ngOnInit(): Promise<void> {
-    this.user = await this.authService.getUserData();
+    try {
+      this.user = await this.authService.getUserData();
+    } catch {
+      console.log('Something went wrong...');
+    }
+
     this.isLoading = false;
   }
 

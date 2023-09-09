@@ -18,3 +18,9 @@ jobs:
   build:
     needs: [ lint, unit-tests ]
     uses: ./.github/workflows/build.yml
+
+  deploy-to-firebase:
+    needs: [ build ]
+    uses: ./.github/workflows/firebase-hosting-pull-request.yml
+    secrets:
+      firebaseServiceAccountSecret: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_ANGULAR_GITHUB_ACTIONS_388812 }}
