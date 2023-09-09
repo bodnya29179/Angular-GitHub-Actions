@@ -11,8 +11,9 @@ jobs:
       - name: '☁️ Checkout repository'
         uses: actions/checkout@v3
 
+      - run: npm ci && npm run build
+
       - name: '🚀 Deploy to Firebase'
-        run: npm ci && npm run build
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
