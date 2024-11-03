@@ -1,0 +1,29 @@
+name: Circular dependency check
+
+on:
+  workflow_call:
+
+jobs:
+  unit-tests:
+    name: Running a check
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [ 16.x ]
+
+    steps:
+      - name: '☁️ Checkout repository'
+        uses: actions/checkout@v3
+
+      - name: '🔧 Setup Node.js v.${{ matrix.node-version }}'
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: '📦 Install dependencies'
+        run: npm ci
+
+      - name: '🔄 Run a check'
+        run: npm run check-circular

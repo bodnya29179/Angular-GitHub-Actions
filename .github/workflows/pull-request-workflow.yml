@@ -11,8 +11,10 @@ jobs:
   lint:
     uses: ./.github/workflows/linter.yml
 
+  circular-dependencies:
+    uses: ./.github/workflows/unit-tests.yml
+
   unit-tests:
-    needs: [ lint ]
     uses: ./.github/workflows/unit-tests.yml
 
   build:
