@@ -1,6 +1,8 @@
 name: PR branch validation
 
-on: pull_request
+on:
+  pull_request:
+    types: [opened]
 
 jobs:
   branch-name-check:

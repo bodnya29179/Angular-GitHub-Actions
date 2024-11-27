@@ -1,0 +1,28 @@
+name: Deploy to Firebase
+
+on:
+  workflow_call:
+    secrets:
+      firebaseServiceAccountSecret:
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: '☁️ Checkout repository'
+        uses: actions/checkout@v3
+
+      - name: '🔍 Restore build artifacts from cache'
+        uses: actions/cache@v3
+        with:
+          path: dist
+          key: build-${{ env.CURRENT_BRANCH }}-${{ env.HEAD_SHA }}--${{ github.run_number }}
+
+      - name: '🚀 Deploy to Firebase'
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.firebaseServiceAccountSecret }}'
+          projectId: angular-github-actions-388812
