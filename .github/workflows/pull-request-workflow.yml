@@ -18,19 +18,19 @@ jobs:
       config: ${{ needs.setup-config.outputs.shared-variables }}
 
   lint:
-    needs: [setup-config]
+    needs: [setup-config, install-dependencies]
     uses: ./.github/workflows/linter.yml
     with:
       config: ${{ needs.setup-config.outputs.shared-variables }}
 
   circular-dependencies:
-    needs: [setup-config]
+    needs: [setup-config, install-dependencies]
     uses: ./.github/workflows/circular-dependencies.yml
     with:
       config: ${{ needs.setup-config.outputs.shared-variables }}
 
   unit-tests:
-    needs: [setup-config]
+    needs: [setup-config, install-dependencies]
     uses: ./.github/workflows/unit-tests.yml
     with:
       config: ${{ needs.setup-config.outputs.shared-variables }}
