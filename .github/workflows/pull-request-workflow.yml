@@ -17,19 +17,30 @@ jobs:
     with:
       config: ${{ needs.setup-config.outputs.shared-variables }}
 
-#  lint:
-#    uses: ./.github/workflows/linter.yml
-#
-#  circular-dependencies:
-#    uses: ./.github/workflows/circular-dependencies.yml
-#
-#  unit-tests:
-#    uses: ./.github/workflows/unit-tests.yml
-#
-#  build:
-#    needs: [lint, unit-tests]
-#    uses: ./.github/workflows/build.yml
-#
+  lint:
+    needs: [setup-config]
+    uses: ./.github/workflows/linter.yml
+    with:
+      config: ${{ needs.setup-config.outputs.shared-variables }}
+
+  circular-dependencies:
+    needs: [setup-config]
+    uses: ./.github/workflows/circular-dependencies.yml
+    with:
+      config: ${{ needs.setup-config.outputs.shared-variables }}
+
+  unit-tests:
+    needs: [setup-config]
+    uses: ./.github/workflows/unit-tests.yml
+    with:
+      config: ${{ needs.setup-config.outputs.shared-variables }}
+
+  build:
+    needs: [setup-config, lint, unit-tests]
+    uses: ./.github/workflows/build.yml
+    with:
+      config: ${{ needs.setup-config.outputs.shared-variables }}
+
 #  deploy-to-firebase:
 #    needs: [build]
 #    uses: ./.github/workflows/firebase-hosting-pull-request.yml

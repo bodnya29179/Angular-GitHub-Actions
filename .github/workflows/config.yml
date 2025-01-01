@@ -24,6 +24,7 @@ jobs:
           NODE_VERSION: 18.18.0
           NODE_MODULES_CACHE_KEY: node-modules-cache-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
           NODE_MODULES_CACHE_RESTORE_KEY: node-modules-cache-
+          BUILD_CACHE_KEY: build-${{ env.CURRENT_BRANCH }}-${{ env.HEAD_SHA }}-${{ github.run_number }}
         with:
           script: |
             const environment = ${{ toJSON(env) }};

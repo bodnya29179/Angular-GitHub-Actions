@@ -2,27 +2,42 @@ name: Linter
 
 on:
   workflow_call:
+    inputs:
+      config:
+        required: true
+        type: string
 
 jobs:
   lint:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [18.x]
-
     steps:
+      - name: '⚙️ Set env variables'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const inputs = ${{ toJSON(inputs) }};
+            const config = JSON.parse(inputs.config);
+
+            Object.entries(config).forEach(([name, value]) => {
+              core.exportVariable(name, value);
+            });
+
       - name: '☁️ Checkout repository'
         uses: actions/checkout@v3
 
-      - name: '🔧 Setup Node.js v.${{ matrix.node-version }}'
+      - name: '🔧 Setup Node.js v.${{ env.NODE_VERSION }}'
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
 
-      - name: '📦 Install dependencies'
-        run: npm ci
+      - name: '🔍 Restore node_modules'
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ env.NODE_MODULES_CACHE_KEY }}
+          restore-keys: ${{ env.NODE_MODULES_CACHE_RESTORE_KEY }}
 
-      - name: '🔎 Lint code'
+      - name: '🔄 Lint code'
         run: npm run lint

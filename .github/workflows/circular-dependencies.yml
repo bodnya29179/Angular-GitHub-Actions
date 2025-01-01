@@ -2,33 +2,42 @@ name: Circular dependency check
 
 on:
   workflow_call:
+    inputs:
+      config:
+        required: true
+        type: string
 
 jobs:
   circular-dependencies:
-    name: Running a check
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        # TODO: move Node.js version to shared-variables
-        node-version: [18.x]
-
     steps:
+      - name: '⚙️ Set env variables'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const inputs = ${{ toJSON(inputs) }};
+            const config = JSON.parse(inputs.config);
+
+            Object.entries(config).forEach(([name, value]) => {
+              core.exportVariable(name, value);
+            });
+
       - name: '☁️ Checkout repository'
         uses: actions/checkout@v3
 
-      - name: '🔧 Setup Node.js v.${{ matrix.node-version }}'
+      - name: '🔧 Setup Node.js v.${{ env.NODE_VERSION }}'
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
 
-      - name: '📦 Restore node_modules from cache'
+      - name: '🔍 Restore node_modules'
         uses: actions/cache@v3
         with:
           path: node_modules
-          # TODO: move key to shared-variables
-          key: node-modules-cache-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ env.NODE_MODULES_CACHE_KEY }}
+          restore-keys: ${{ env.NODE_MODULES_CACHE_RESTORE_KEY }}
 
       - name: '🔄 Run a check'
         run: npm run check-circular

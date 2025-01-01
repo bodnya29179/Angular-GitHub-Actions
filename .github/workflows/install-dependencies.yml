@@ -18,6 +18,7 @@ jobs:
           script: |
             const inputs = ${{ toJSON(inputs) }};
             const config = JSON.parse(inputs.config);
+
             Object.entries(config).forEach(([name, value]) => {
               core.exportVariable(name, value);
             });
@@ -28,10 +29,10 @@ jobs:
       - name: '🔧 Setup Node.js v.${{ env.NODE_VERSION }}'
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
 
-      - name: '🔍 Restore node_modules from cache'
+      - name: '🔍 Cache/restore node_modules'
         uses: actions/cache@v3
         id: cache-node-modules
         with:
