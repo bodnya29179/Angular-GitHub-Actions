@@ -2,8 +2,12 @@ name: Deploy to Firebase
 
 on:
   workflow_call:
+    inputs:
+      config:
+        required: true
+        type: string
     secrets:
-      firebaseServiceAccountSecret:
+      firebase-service-account-secret:
         required: true
 
 jobs:
@@ -11,6 +15,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: '⚙️ Set env variables'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const inputs = ${{ toJSON(inputs) }};
+            const config = JSON.parse(inputs.config);
+
+            Object.entries(config).forEach(([name, value]) => {
+              core.exportVariable(name, value);
+            });
+
       - name: '☁️ Checkout repository'
         uses: actions/checkout@v3
 
@@ -18,11 +33,11 @@ jobs:
         uses: actions/cache@v3
         with:
           path: dist
-          key: build-${{ env.CURRENT_BRANCH }}-${{ env.HEAD_SHA }}--${{ github.run_number }}
+          key: ${{ env.BUILD_CACHE_KEY }}
 
       - name: '🚀 Deploy to Firebase'
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.firebaseServiceAccountSecret }}'
+          firebaseServiceAccount: '${{ secrets.firebase-service-account-secret }}'
           projectId: angular-github-actions-388812

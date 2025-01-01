@@ -41,8 +41,10 @@ jobs:
     with:
       config: ${{ needs.setup-config.outputs.shared-variables }}
 
-#  deploy-to-firebase:
-#    needs: [build]
-#    uses: ./.github/workflows/firebase-hosting-pull-request.yml
-#    secrets:
-#      firebaseServiceAccountSecret: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_ANGULAR_GITHUB_ACTIONS_388812 }}
+  deploy-to-firebase:
+    needs: [setup-config, build]
+    uses: ./.github/workflows/firebase-hosting-pull-request.yml
+    with:
+      config: ${{ needs.setup-config.outputs.shared-variables }}
+    secrets:
+      firebase-service-account-secret: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_ANGULAR_GITHUB_ACTIONS_388812 }}

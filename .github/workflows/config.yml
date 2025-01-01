@@ -24,8 +24,36 @@ jobs:
           NODE_VERSION: 18.18.0
           NODE_MODULES_CACHE_KEY: node-modules-cache-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
           NODE_MODULES_CACHE_RESTORE_KEY: node-modules-cache-
-          BUILD_CACHE_KEY: build-${{ env.CURRENT_BRANCH }}-${{ env.HEAD_SHA }}-${{ github.run_number }}
         with:
           script: |
             const environment = ${{ toJSON(env) }};
+            
+            switch('${{ github.event_name }}') {
+              case 'pull_request': {
+                environment.headSha = '${{ github.event.pull_request.head.sha }}';
+                environment.currentBranch = '${{ github.head_ref }}';
+                environment.buildCacheKey = `build-${ currentBranch }-${headSha}-${{ github.run_number }};
+
+                break;
+              }
+              case 'workflow_dispatch':
+              case 'push': {
+                environment.headSha = '${{ github.sha }}';
+                environment.currentBranch = '${{ github.ref_name }}';
+                environment.buildCacheKey = `build-${ currentBranch }-${headSha};
+
+                break;
+              }
+            }
+            
+            core.exportVariable('HEAD_SHA', environment.headSha);
+            core.exportVariable('CURRENT_BRANCH', environment.currentBranch);
+            core.exportVariable('BUILD_CACHE_KEY', environment.buildCacheKey);
+
             core.setOutput('value', JSON.stringify(environment));
+
+      - name: '👀 Display variables'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            console.log('Result', ${{ steps.initialize-variables.outputs.value }});
