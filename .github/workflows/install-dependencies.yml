@@ -21,25 +21,24 @@ jobs:
             Object.entries(config).forEach(([name, value]) => {
               core.exportVariable(name, value);
             });
-            console.log(${{ env.NODE_MODULES_CACHE_KEY }});
 
-#      - name: '☁️ Checkout repository'
-#        uses: actions/checkout@v3
-#
-#      - name: '🔧 Setup Node.js v.${{ env.NODE_VERSION }}'
-#        uses: actions/setup-node@v3
-#        with:
-#          node-version: ${{ matrix.node-version }}
-#          cache: 'npm'
-#
-#      - name: '🔍 Restore node_modules from cache'
-#        uses: actions/cache@v3
-#        id: cache-node-modules
-#        with:
-#          path: node_modules
-#          key: ${{ env.NODE_MODULES_CACHE_KEY }}
-#          restore-keys: ${{ env.NODE_MODULES_CACHE_RESTORE_KEY }}
-#
-#      - name: '📦 Install dependencies'
-#        if: steps.cache-node-modules.outputs.cache-hit != 'true'
-#        run: npm ci
+      - name: '☁️ Checkout repository'
+        uses: actions/checkout@v3
+
+      - name: '🔧 Setup Node.js v.${{ env.NODE_VERSION }}'
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: '🔍 Restore node_modules from cache'
+        uses: actions/cache@v3
+        id: cache-node-modules
+        with:
+          path: node_modules
+          key: ${{ env.NODE_MODULES_CACHE_KEY }}
+          restore-keys: ${{ env.NODE_MODULES_CACHE_RESTORE_KEY }}
+
+      - name: '📦 Install dependencies'
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: npm ci
