@@ -1,0 +1,36 @@
+name: Config
+
+on:
+  workflow_call:
+    outputs:
+      shared-variables:
+        value: ${{ jobs.setup-config.outputs.shared-variables }}
+
+jobs:
+  setup-config:
+    runs-on: ubuntu-latest
+
+    outputs:
+      shared-variables: ${{ steps.initialize-variables.outputs.value }}
+
+    steps:
+      - name: '☁️ Checkout repository'
+        uses: actions/checkout@v3
+
+      - name: '✨ Initialize shared variables'
+        id: initialize-variables
+        uses: actions/github-script@v7
+        env:
+          NODE_VERSION: 18.18.0
+          NODE_MODULES_CACHE_KEY: node-modules-cache-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          NODE_MODULES_CACHE_RESTORE_KEY: node-modules-cache-
+        with:
+          script: |
+            const environment = ${{ toJSON(env) }};
+            core.setOutput('value', JSON.stringify(environment));
+
+      - name: Display variables
+        uses: actions/github-script@v7
+        with:
+          script: |
+            console.log('Result', ${{ toJSON(steps.initialize-variables.outputs.value) }});

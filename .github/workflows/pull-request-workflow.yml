@@ -8,21 +8,42 @@ on:
     types: [opened, synchronize]
 
 jobs:
-  lint:
-    uses: ./.github/workflows/linter.yml
+  setup-config:
+    uses: ./.github/workflows/config.yml
 
-  circular-dependencies:
-    uses: ./.github/workflows/unit-tests.yml
+  logs:
+    needs: [setup-config]
+    runs-on: ubuntu-latest
 
-  unit-tests:
-    uses: ./.github/workflows/unit-tests.yml
+    steps:
+      - name: 'Logs'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            console.log(${{ needs.setup-config.outputs.shared-variables }});
 
-  build:
-    needs: [lint, unit-tests]
-    uses: ./.github/workflows/build.yml
+  install-dependencies:
+    needs: [setup-config]
+    uses: ./.github/workflows/install-dependencies.yml
+    with:
+      test: abcd
+      config: ${{ toJSON(needs.setup-config.outputs.shared-variables) }}
 
-  deploy-to-firebase:
-    needs: [build]
-    uses: ./.github/workflows/firebase-hosting-pull-request.yml
-    secrets:
-      firebaseServiceAccountSecret: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_ANGULAR_GITHUB_ACTIONS_388812 }}
+#  lint:
+#    uses: ./.github/workflows/linter.yml
+#
+#  circular-dependencies:
+#    uses: ./.github/workflows/circular-dependencies.yml
+#
+#  unit-tests:
+#    uses: ./.github/workflows/unit-tests.yml
+#
+#  build:
+#    needs: [lint, unit-tests]
+#    uses: ./.github/workflows/build.yml
+#
+#  deploy-to-firebase:
+#    needs: [build]
+#    uses: ./.github/workflows/firebase-hosting-pull-request.yml
+#    secrets:
+#      firebaseServiceAccountSecret: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_ANGULAR_GITHUB_ACTIONS_388812 }}
