@@ -15,19 +15,11 @@ jobs:
     needs: [setup-config]
     runs-on: ubuntu-latest
 
-    steps:
-      - name: 'Logs'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            console.log(${{ needs.setup-config.outputs.shared-variables }});
-
   install-dependencies:
     needs: [setup-config]
     uses: ./.github/workflows/install-dependencies.yml
     with:
-      test: abcd
-      config: ${{ toJSON(needs.setup-config.outputs.shared-variables) }}
+      config: ${{ needs.setup-config.outputs.shared-variables }}
 
 #  lint:
 #    uses: ./.github/workflows/linter.yml

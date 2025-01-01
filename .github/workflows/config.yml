@@ -26,8 +26,7 @@ jobs:
           NODE_MODULES_CACHE_RESTORE_KEY: node-modules-cache-
         with:
           script: |
-            const environment = ${{ toJSON(env) }};
-            core.setOutput('value', JSON.stringify(environment));
+            core.setOutput('value', ${{ toJSON(env) }});
 
       - name: Display variables
         uses: actions/github-script@v7
