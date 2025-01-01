@@ -6,20 +6,18 @@ on:
     branches: ['master', 'develop', 'feature/*']
     # Events to which the workflow will respond
     types: [opened, synchronize]
+  workflow_call:
 
 jobs:
   setup-config:
     uses: ./.github/workflows/config.yml
 
-  logs:
-    needs: [setup-config]
-    runs-on: ubuntu-latest
-
   install-dependencies:
     needs: [setup-config]
     uses: ./.github/workflows/install-dependencies.yml
     with:
-      config: ${{ needs.setup-config.outputs.shared-variables }}
+      test: abcd
+      config: ${{ toJSON(needs.setup-config.outputs.shared-variables) }}
 
 #  lint:
 #    uses: ./.github/workflows/linter.yml
