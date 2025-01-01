@@ -32,7 +32,7 @@ jobs:
               case 'pull_request': {
                 environment.HEAD_SHA = '${{ github.event.pull_request.head.sha }}';
                 environment.CURRENT_BRANCH = '${{ github.head_ref }}';
-                environment.BUILD_CACHE_KEY = `build-${ environment.currentBranch }-${ environment.headSha }-${{ github.run_number }}`;
+                environment.BUILD_CACHE_KEY = `build-${ environment.CURRENT_BRANCH }-${ environment.HEAD_SHA }-${{ github.run_number }}`;
 
                 break;
               }
@@ -40,7 +40,7 @@ jobs:
               case 'push': {
                 environment.HEAD_SHA = '${{ github.sha }}';
                 environment.CURRENT_BRANCH = '${{ github.ref_name }}';
-                environment.BUILD_CACHE_KEY = `build-${ environment.currentBranch }-${ environment.headSha }`;
+                environment.BUILD_CACHE_KEY = `build-${ environment.CURRENT_BRANCH }-${ environment.HEAD_SHA }`;
 
                 break;
               }
