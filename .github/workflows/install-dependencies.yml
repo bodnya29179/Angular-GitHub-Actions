@@ -6,19 +6,12 @@ on:
       config:
         required: true
         type: string
-      test:
-        type: string
-        required: false
 
 jobs:
   install-dependencies:
     runs-on: ubuntu-latest
 
     steps:
-      - shell: bash
-        run: echo "${{ toJSON(inputs) }}"
-
-
       - name: '⚙️ Set env variables'
         uses: actions/github-script@v7
         with:
