@@ -17,10 +17,11 @@ jobs:
         with:
           script: |
             const inputs = ${{ toJSON(inputs) }};
-            Object.entries(inputs.config).forEach(([name, value]) => {
+            const config = JSON.parse(inputs.config);
+            Object.entries(config).forEach(([name, value]) => {
               core.exportVariable(name, value);
             });
-            console.log(${{ env }});
+            console.log(${{ env.NODE_MODULES_CACHE_KEY }});
 
 #      - name: '☁️ Checkout repository'
 #        uses: actions/checkout@v3
