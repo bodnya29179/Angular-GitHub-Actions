@@ -30,25 +30,25 @@ jobs:
             
             switch('${{ github.event_name }}') {
               case 'pull_request': {
-                environment.headSha = '${{ github.event.pull_request.head.sha }}';
-                environment.currentBranch = '${{ github.head_ref }}';
-                environment.buildCacheKey = `build-${ environment.currentBranch }-${ environment.headSha }-${{ github.run_number }}`;
+                environment.HEAD_SHA = '${{ github.event.pull_request.head.sha }}';
+                environment.CURRENT_BRANCH = '${{ github.head_ref }}';
+                environment.BUILD_CACHE_KEY = `build-${ environment.currentBranch }-${ environment.headSha }-${{ github.run_number }}`;
 
                 break;
               }
               case 'workflow_dispatch':
               case 'push': {
-                environment.headSha = '${{ github.sha }}';
-                environment.currentBranch = '${{ github.ref_name }}';
-                environment.buildCacheKey = `build-${ environment.currentBranch }-${ environment.headSha }`;
+                environment.HEAD_SHA = '${{ github.sha }}';
+                environment.CURRENT_BRANCH = '${{ github.ref_name }}';
+                environment.BUILD_CACHE_KEY = `build-${ environment.currentBranch }-${ environment.headSha }`;
 
                 break;
               }
             }
-            
-            core.exportVariable('HEAD_SHA', environment.headSha);
-            core.exportVariable('CURRENT_BRANCH', environment.currentBranch);
-            core.exportVariable('BUILD_CACHE_KEY', environment.buildCacheKey);
+
+            core.exportVariable('HEAD_SHA', environment.HEAD_SHA);
+            core.exportVariable('CURRENT_BRANCH', environment.CURRENT_BRANCH);
+            core.exportVariable('BUILD_CACHE_KEY', environment.BUILD_CACHE_KEY);
 
             core.setOutput('value', JSON.stringify(environment));
 
