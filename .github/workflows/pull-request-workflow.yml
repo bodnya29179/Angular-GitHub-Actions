@@ -8,21 +8,43 @@ on:
     types: [opened, synchronize]
 
 jobs:
+  setup-config:
+    uses: ./.github/workflows/config.yml
+
+  install-dependencies:
+    needs: [setup-config]
+    uses: ./.github/workflows/install-dependencies.yml
+    with:
+      config: ${{ needs.setup-config.outputs.shared-variables }}
+
   lint:
+    needs: [setup-config, install-dependencies]
     uses: ./.github/workflows/linter.yml
+    with:
+      config: ${{ needs.setup-config.outputs.shared-variables }}
 
   circular-dependencies:
-    uses: ./.github/workflows/unit-tests.yml
+    needs: [setup-config, install-dependencies]
+    uses: ./.github/workflows/circular-dependencies.yml
+    with:
+      config: ${{ needs.setup-config.outputs.shared-variables }}
 
   unit-tests:
+    needs: [setup-config, install-dependencies]
     uses: ./.github/workflows/unit-tests.yml
+    with:
+      config: ${{ needs.setup-config.outputs.shared-variables }}
 
   build:
-    needs: [lint, unit-tests]
+    needs: [setup-config, lint, unit-tests]
     uses: ./.github/workflows/build.yml
+    with:
+      config: ${{ needs.setup-config.outputs.shared-variables }}
 
   deploy-to-firebase:
-    needs: [build]
+    needs: [setup-config, build]
     uses: ./.github/workflows/firebase-hosting-pull-request.yml
+    with:
+      config: ${{ needs.setup-config.outputs.shared-variables }}
     secrets:
-      firebaseServiceAccountSecret: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_ANGULAR_GITHUB_ACTIONS_388812 }}
+      firebase-service-account-secret: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_ANGULAR_GITHUB_ACTIONS_388812 }}

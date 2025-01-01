@@ -1,0 +1,59 @@
+name: Config
+
+on:
+  workflow_call:
+    outputs:
+      shared-variables:
+        value: ${{ jobs.setup-config.outputs.shared-variables }}
+
+jobs:
+  setup-config:
+    runs-on: ubuntu-latest
+
+    outputs:
+      shared-variables: ${{ steps.initialize-variables.outputs.value }}
+
+    steps:
+      - name: '☁️ Checkout repository'
+        uses: actions/checkout@v3
+
+      - name: '✨ Initialize shared variables'
+        id: initialize-variables
+        uses: actions/github-script@v7
+        env:
+          NODE_VERSION: 18.18.0
+          NODE_MODULES_CACHE_KEY: node-modules-cache-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          NODE_MODULES_CACHE_RESTORE_KEY: node-modules-cache-
+        with:
+          script: |
+            const environment = ${{ toJSON(env) }};
+            
+            switch('${{ github.event_name }}') {
+              case 'pull_request': {
+                environment.HEAD_SHA = '${{ github.event.pull_request.head.sha }}';
+                environment.CURRENT_BRANCH = '${{ github.head_ref }}';
+                environment.BUILD_CACHE_KEY = `build-${ environment.CURRENT_BRANCH }-${ environment.HEAD_SHA }-${{ github.run_number }}`;
+
+                break;
+              }
+              case 'workflow_dispatch':
+              case 'push': {
+                environment.HEAD_SHA = '${{ github.sha }}';
+                environment.CURRENT_BRANCH = '${{ github.ref_name }}';
+                environment.BUILD_CACHE_KEY = `build-${ environment.CURRENT_BRANCH }-${ environment.HEAD_SHA }`;
+
+                break;
+              }
+            }
+
+            core.exportVariable('HEAD_SHA', environment.HEAD_SHA);
+            core.exportVariable('CURRENT_BRANCH', environment.CURRENT_BRANCH);
+            core.exportVariable('BUILD_CACHE_KEY', environment.BUILD_CACHE_KEY);
+
+            core.setOutput('value', JSON.stringify(environment));
+
+      - name: '👀 Display variables'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            console.log(${{ steps.initialize-variables.outputs.value }});

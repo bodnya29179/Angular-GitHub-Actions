@@ -1,4 +1,4 @@
-name: Linter
+name: Install dependencies
 
 on:
   workflow_call:
@@ -8,7 +8,7 @@ on:
         type: string
 
 jobs:
-  lint:
+  install-dependencies:
     runs-on: ubuntu-latest
 
     steps:
@@ -32,12 +32,14 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
 
-      - name: '🔍 Restore node_modules'
+      - name: '🔍 Cache/restore node_modules'
         uses: actions/cache@v3
+        id: cache-node-modules
         with:
           path: node_modules
           key: ${{ env.NODE_MODULES_CACHE_KEY }}
           restore-keys: ${{ env.NODE_MODULES_CACHE_RESTORE_KEY }}
 
-      - name: '🔄 Lint code'
-        run: npm run lint
+      - name: '📦 Install dependencies'
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: npm ci
