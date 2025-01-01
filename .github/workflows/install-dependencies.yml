@@ -16,14 +16,11 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            const inputs = ${{ toJSON(inputs) }}
-            console.log(inputs);
-#            const v = ${{ inputs.config }};
-#            console.log('Config123', v);
-#            console.log(typeof(v));
-#            Object.entries(${{ inputs.config }}).forEach(([name, value]) => {
-#              core.exportVariable(name, value);
-#            });
+            const inputs = ${{ toJSON(inputs) }};
+            Object.entries(inputs.config).forEach(([name, value]) => {
+              core.exportVariable(name, value);
+            });
+            console.log(${{ env }});
 
 #      - name: '☁️ Checkout repository'
 #        uses: actions/checkout@v3
